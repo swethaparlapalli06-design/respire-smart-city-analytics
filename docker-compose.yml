@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - TOMTOM_API_KEY=upsqo2qgLjE0R6jfUZzJeRZQTHQmOsPV
+      - NASA_API_KEY=jtc80X6KQGhOoKGbhb4b03oqeOBqUt2gnZV0kw6z
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/urban_planning
+      - REDIS_URL=redis://redis:6379
+      - HIGH_PRIORITY_AQI_THRESHOLD=201
+      - MEDIUM_PRIORITY_AQI_THRESHOLD=151
+      - TRAFFIC_POLL_INTERVAL=60
+      - AQI_POLL_INTERVAL=60
+      - CORS_ORIGIN=http://localhost:3000
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - urban-planning-network
+
+  # Frontend React App
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://localhost:5000/api
+      - VITE_WS_URL=ws://localhost:5000/realtime
+      - VITE_MAPBOX_TOKEN=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - urban-planning-network
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=urban_planning
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - urban-planning-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - urban-planning-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  urban-planning-network:
+    driver: bridge
