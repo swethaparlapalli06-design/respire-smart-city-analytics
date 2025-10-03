@@ -4,7 +4,7 @@
   "description": "Frontend dashboard for urban planning platform",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --mode production",
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
