@@ -1,285 +1,206 @@
-# Urban Planning Platform
+# 🌍 Respire - Smart City Analytics Platform
 
-A real-time urban planning platform that monitors traffic and air quality with a what-if simulator for testing intervention strategies.
+A real-time urban planning platform that monitors traffic patterns, air quality, and urban health. Built for urban planners, city officials, and environmental researchers.
 
-## Features
+## ✨ Features
 
-- **Real-time Traffic Monitoring**: Live traffic data from TomTom API
-- **Air Quality Tracking**: AQI monitoring with CPCB and NASA data sources
-- **High-Priority Alert Zones**: Automatic detection of areas with harmful AQI levels
-- **What-If Simulator**: Test intervention strategies and predict their impact
-- **PDF Export**: Generate comprehensive reports of simulation results
-- **WebSocket Updates**: Real-time data streaming to the frontend
-- **Mobile-Responsive**: Optimized for desktop and mobile devices
+### 🚦 Real-time Monitoring
+- **Traffic Analysis**: Live traffic data with congestion levels and incident tracking
+- **Air Quality Monitoring**: Real-time AQI measurements across multiple zones
+- **Interactive Maps**: Leaflet-based maps with traffic and pollution overlays
 
-## Architecture
+### 🧪 What-If Simulator
+- **18 Urban Interventions**: Test realistic urban planning solutions
+- **Instant Results**: See AQI improvements immediately when selecting interventions
+- **Professional Categories**: Traffic & Transport, Urban Design & Environment, Policy & Quick Fixes
 
-### Backend (Node.js + TypeScript)
-- **Express.js** REST API with WebSocket support
-- **TomTom Traffic API** integration for real-time traffic data
-- **CPCB/NASA Air Quality** data sources
-- **PostgreSQL** for persistent data storage
-- **Redis** for caching and session management
-- **Puppeteer** for PDF generation
+### 📊 Analytics & Reports
+- **PDF Report Generation**: Comprehensive urban planning reports
+- **Zone-Specific Analysis**: Detailed insights for each monitoring zone
+- **Population Impact**: Calculate how many people benefit from interventions
 
-### Frontend (React + TypeScript)
-- **React 18** with modern hooks and context
-- **Mapbox GL** for interactive maps
-- **Tailwind CSS** for responsive styling
-- **WebSocket** client for real-time updates
-- **React Hot Toast** for notifications
+### 🎨 Professional UI
+- **Clean Landing Page**: Minimalist design with clear value proposition
+- **Responsive Design**: Works perfectly on desktop and mobile
+- **Real-time Updates**: Live data streaming with WebSocket connections
 
-## Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+
-- Docker and Docker Compose
-- Mapbox account (for map tiles)
+- Node.js 18+ 
+- npm or yarn
 
-### Environment Setup
+### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   cd urban-planning-platform
+   git clone https://github.com/yourusername/respire-smart-city-analytics.git
+   cd respire-smart-city-analytics
    ```
 
-2. **Set up environment variables**
+2. **Install dependencies**
    ```bash
-   # Backend environment
-   cp backend/env.example backend/.env
+   # Backend
+   cd backend
+   npm install
    
-   # Edit backend/.env with your API keys:
-   TOMTOM_API_KEY=upsqo2qgLjE0R6jfUZzJeRZQTHQmOsPV
-   NASA_API_KEY=jtc80X6KQGhOoKGbhb4b03oqeOBqUt2gnZV0kw6z
-   ```
-
-3. **Frontend environment**
-   ```bash
-   # Create frontend/.env.local
-   echo "VITE_MAPBOX_TOKEN=your_mapbox_token_here" > frontend/.env.local
-   ```
-
-### Development Mode
-
-1. **Install dependencies**
-   ```bash
+   # Frontend
+   cd ../frontend
    npm install
    ```
 
-2. **Start development servers**
+3. **Start the application**
    ```bash
+   # Backend (Terminal 1)
+   cd backend
+   node server.js
+   
+   # Frontend (Terminal 2)
+   cd frontend
    npm run dev
    ```
 
-   This will start:
-   - Backend API on http://localhost:5000
-   - Frontend on http://localhost:3000
-   - PostgreSQL on port 5432
-   - Redis on port 6379
+4. **Open your browser**
+   - Visit `http://localhost:3000` for the frontend
+   - Backend API runs on `http://localhost:5000`
 
-### Production Mode
+## 🏗️ Architecture
 
-1. **Build and start with Docker**
-   ```bash
-   docker-compose up --build
-   ```
+### Frontend
+- **React 18** with TypeScript
+- **Tailwind CSS** for styling
+- **Leaflet** for interactive maps
+- **jsPDF** for report generation
+- **Vite** for fast development
 
-2. **Access the application**
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:5000
-   - WebSocket: ws://localhost:5000/realtime
+### Backend
+- **Node.js** with Express
+- **WebSocket** for real-time updates
+- **RESTful API** design
+- **Modular service architecture**
 
-## API Endpoints
+### Data Sources
+- **NASA Earth Observation** for satellite validation
+- **Realistic traffic patterns** based on research
+- **Air quality monitoring** with predictive modeling
 
-### Traffic Data
-- `GET /api/traffic?bbox=minLat,minLng,maxLat,maxLng` - Get traffic segments and incidents
-- `GET /api/traffic/segments/:id` - Get specific segment details
-- `GET /api/traffic/incidents/:id` - Get specific incident details
+## 🎯 Use Cases
 
-### Air Quality Data
-- `GET /api/aqi?bbox=minLat,minLng,maxLat,maxLng` - Get AQI cells and stations
-- `GET /api/aqi/stations` - Get all AQI stations
-- `GET /api/aqi/stations/:id` - Get specific station details
+### For Urban Planners
+- Test intervention scenarios before implementation
+- Generate professional reports for stakeholders
+- Monitor real-time city health metrics
 
-### Alerts
-- `GET /api/alerts?bbox=minLat,minLng,maxLat,maxLng` - Get all alerts
-- `GET /api/alerts/high-priority?bbox=minLat,minLng,maxLat,maxLng` - Get high-priority alerts only
-- `GET /api/alerts/:id` - Get specific alert details
+### For City Officials
+- Make data-driven policy decisions
+- Track progress of urban initiatives
+- Communicate impact to citizens
 
-### Simulation
-- `POST /api/simulate` - Run what-if simulation
-- `GET /api/simulate/baseline/:zoneId` - Get baseline data for a zone
-- `GET /api/simulate/history/:zoneId` - Get simulation history
-- `POST /api/simulate/save` - Save simulation results
+### For Researchers
+- Access real-time urban data
+- Test hypothesis with simulation tools
+- Generate comprehensive analysis reports
 
-### Export
-- `GET /api/export/summary?zoneId=...` - Export PDF summary
-- `GET /api/export/data?zoneId=...&format=json|csv` - Export data
+## 🛠️ Development
 
-### WebSocket
-- `ws://localhost:5000/realtime` - Real-time data updates
-
-## Data Sources
-
-### Traffic Data (TomTom)
-- **Flow Segment Data**: Real-time speed and congestion information
-- **Incidents**: Traffic incidents, road closures, and events
-- **Update Frequency**: Every 60 seconds
-
-### Air Quality Data
-- **Primary Source**: CPCB (Central Pollution Control Board) India
-- **Fallback Source**: OpenAQ for global coverage
-- **Satellite Data**: NASA Earth API for context and backfill
-- **Update Frequency**: Every 60 seconds
-
-## Alert System
-
-### High-Priority Thresholds
-- **AQI ≥ 201**: Very Unhealthy (High Priority)
-- **AQI 151-200**: Unhealthy (Medium Priority)
-
-### Alert Components
-- Zone identification and location
-- Current AQI and top pollutant
-- Population exposure estimates
-- Timestamp and update frequency
-
-## What-If Simulator
-
-### Intervention Types
-1. **Traffic Signal Retiming**: Optimize signal timing for better flow
-2. **Low Emission Zone (LEZ)**: Restrict high-emission vehicles
-3. **Bike Lane Modal Shift**: Shift trips to non-motorized transport
-4. **Green Buffer**: Plant trees for better air dispersion
-5. **Traffic Rerouting**: Redirect traffic away from hotspots
-
-### Impact Modeling
-- **Baseline Emissions**: Current traffic and air quality conditions
-- **Intervention Effects**: Predicted changes from interventions
-- **Dispersion Modeling**: Simple Gaussian plume model
-- **Population Impact**: Estimated people benefiting from improvements
-
-### Output Metrics
-- AQI improvement (ΔAQI)
-- Pollutant reduction (PM2.5, NO₂)
-- Population benefiting
-- Confidence intervals
-- Actionable recommendations
-
-## Testing
-
-### Backend Tests
-```bash
-cd backend
-npm test
+### Project Structure
+```
+respire-smart-city-analytics/
+├── frontend/           # React frontend application
+│   ├── src/
+│   │   ├── components/ # React components
+│   │   ├── services/   # API and WebSocket services
+│   │   └── types/      # TypeScript type definitions
+│   └── package.json
+├── backend/            # Node.js backend server
+│   ├── src/
+│   │   ├── routes/     # API route handlers
+│   │   ├── services/   # Business logic services
+│   │   └── types/      # TypeScript interfaces
+│   └── package.json
+└── README.md
 ```
 
-### Frontend Tests
-```bash
-cd frontend
-npm test
-```
+### Key Components
 
-### E2E Tests
-```bash
-npm run test:e2e
-```
+#### Frontend Components
+- **`LandingPage.tsx`**: Professional landing page
+- **`SimpleMap.tsx`**: Interactive Leaflet map
+- **`Simulator.tsx`**: What-if simulation interface
+- **`App.tsx`**: Main application component
 
-## Performance
+#### Backend Services
+- **`server.js`**: Main Express server
+- **Traffic Service**: Real-time traffic data
+- **AQI Service**: Air quality monitoring
+- **Simulator Service**: Intervention calculations
 
-### Load Testing
-- Target: 200 concurrent users
-- Update frequency: 1Hz
-- Response time: p95 < 500ms
+## 📈 Performance
 
-### Caching Strategy
-- Redis caching for API responses
-- ETag support for conditional requests
-- WebSocket connection pooling
+- **Real-time Updates**: WebSocket connections for live data
+- **Optimized Rendering**: React 18 with concurrent features
+- **Efficient Maps**: Leaflet with optimized tile loading
+- **Fast Builds**: Vite for rapid development
 
-## Security
-
-### API Security
-- Rate limiting (100 requests per 15 minutes)
-- Input validation and sanitization
-- CORS configuration
-- Helmet.js security headers
-
-### Data Protection
-- API keys stored server-side only
-- No sensitive data exposed to client
-- Secure WebSocket connections
-
-## Deployment
-
-### Docker Deployment
-```bash
-docker-compose up -d
-```
+## 🔧 Configuration
 
 ### Environment Variables
-- `TOMTOM_API_KEY`: TomTom Traffic API key
-- `NASA_API_KEY`: NASA Earth API key
-- `DATABASE_URL`: PostgreSQL connection string
-- `REDIS_URL`: Redis connection string
-- `CORS_ORIGIN`: Frontend URL for CORS
+Create `.env` files in both frontend and backend directories:
 
-### Health Checks
-- Backend: `GET /health`
-- Database: Connection pool monitoring
-- Redis: Connection status
-- External APIs: Response time monitoring
+**Backend (.env)**
+```env
+PORT=5000
+NODE_ENV=development
+```
 
-## Monitoring
+**Frontend (.env)**
+```env
+VITE_API_URL=http://localhost:5000
+```
 
-### Metrics
-- API response times
-- WebSocket connection count
-- Data polling success rate
-- Alert generation frequency
+## 🚀 Deployment
 
-### Logging
-- Structured logging with timestamps
-- Error tracking and alerting
-- Performance metrics collection
+### Vercel (Recommended)
+1. Push code to GitHub
+2. Connect repository to Vercel
+3. Configure build settings:
+   - Root Directory: `frontend`
+   - Build Command: `npm run build`
+   - Output Directory: `dist`
 
-## Contributing
+### Netlify
+1. Connect GitHub repository
+2. Set build directory to `frontend`
+3. Build command: `npm run build`
+
+### Railway (Full-stack)
+1. Connect GitHub repository
+2. Railway auto-detects both frontend and backend
+3. Configure services for both directories
+
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new functionality
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## License
+## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Support
+## 🙏 Acknowledgments
 
-For support and questions:
-- Create an issue in the repository
-- Check the documentation
-- Review the API endpoints
+- **NASA Earth Observation** for satellite data
+- **OpenStreetMap** contributors for map tiles
+- **Leaflet** for interactive mapping
+- **React** and **Node.js** communities
 
-## Roadmap
+## 📞 Support
 
-### Phase 1 (Current)
-- ✅ Real-time traffic and AQI monitoring
-- ✅ What-if simulator with basic interventions
-- ✅ PDF export functionality
-- ✅ WebSocket real-time updates
+For support, email support@respire-analytics.com or create an issue in this repository.
 
-### Phase 2 (Future)
-- Historical data playback
-- Advanced impact scoring
-- Email/webhook alerts
-- Multi-city support
-- Advanced visualization options
+---
 
-### Phase 3 (Future)
-- Machine learning predictions
-- Integration with more data sources
-- Mobile app development
-- Advanced analytics dashboard
+**Built with ❤️ for smarter cities and better urban planning**
